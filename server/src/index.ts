@@ -126,7 +126,7 @@ app.post("/api/run/:service", upload.any(), async (req, res) => {
       case "video": {
         const videoSvc = new GeminiVideoService({ apiKey });
         const videoResult = await videoSvc.generateVideoFromPrompt(inputs.prompt || "", { model: selectedModel, ...config });
-        result = { videoBase64: videoResult.generatedVideos[0]?.videoBytes };
+        result = videoResult;
         break;
       }
       default:

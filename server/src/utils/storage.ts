@@ -74,12 +74,17 @@ export async function saveRun(serviceId: string, request: any, result: any, code
       videoBuffer = Buffer.from(videoInfo.videoBytes, "base64");
     } else if (videoInfo.uri) {
       try {
-        console.log(`Downloading video from: ${videoInfo.uri}`);
-        const response = await fetch(videoInfo.uri);
+        const apiKey = process.env.GEMINI_API_KEY;
+        const downloadUrl = videoInfo.uri.includes('?') 
+          ? `${videoInfo.uri}&key=${apiKey}` 
+          : `${videoInfo.uri}?key=${apiKey}`;
+          
+        console.log(`Downloading video artifact from: ${videoInfo.uri}`);
+        const response = await fetch(downloadUrl);
         if (response.ok) {
           videoBuffer = Buffer.from(await response.arrayBuffer());
         } else {
-          console.error(`Failed to download video from URI: ${response.statusText}`);
+          console.error(`Failed to download video from URI: ${response.status} ${response.statusText}`);
         }
       } catch (err) {
         console.error("Error downloading video artifact:", err);
@@ -89,7 +94,7 @@ export async function saveRun(serviceId: string, request: any, result: any, code
     if (videoBuffer) {
       writeFileSync(join(basePath, "output.mp4"), videoBuffer);
       parsedResult.videoBase64 = "[Extracted to output.mp4]";
-      // Add a convenience property for immediate preview if we didn't have it
+      // Add a convenience property for immediate preview
       result.videoBase64 = videoBuffer.toString("base64");
     }
   }

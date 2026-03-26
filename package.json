@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "description": "React + Vite + Express playground for @villutur/gemini-ai-lib.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/villutur/gemini-ai-lib-playground.git"
+  },
+  "bugs": {
+    "url": "https://github.com/villutur/gemini-ai-lib-playground/issues"
+  },
+  "homepage": "https://github.com/villutur/gemini-ai-lib-playground#readme",
   "type": "module",
   "scripts": {
     "dev": "concurrently -k \"pnpm dev:server\" \"pnpm dev:client\"",

@@ -76,7 +76,16 @@ const result = await service.generateVideoFromPrompt(
   ${configStr}
 );
 
-console.log(result.generatedVideos[0].videoBytes);`;
+const videoInfo = result.generatedVideos[0];
+if (videoInfo.videoBytes) {
+  // Use raw bytes from videoInfo.videoBytes
+} else if (videoInfo.uri) {
+  // Download using videoInfo.uri + api key
+  const downloadUrl = \`\${videoInfo.uri}\${videoInfo.uri.includes('?') ? '&' : '?'}key=\${process.env.GEMINI_API_KEY}\`;
+  const response = await fetch(downloadUrl);
+  const buffer = await response.arrayBuffer();
+  // save buffer to file...
+}`;
       
     case "music":
       return `import { GeminiMusicService } from "@villutur/gemini-ai-lib";
