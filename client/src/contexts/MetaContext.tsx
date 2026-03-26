@@ -6,6 +6,7 @@ export interface MetaResponse {
   models: Record<ServiceId, string[]>;
   configs: Record<ServiceId, Record<string, any[]>>; // TODO: type descriptors accurately later
   presets: Record<ServiceId, any[]>;
+  voices: any[];
 }
 
 interface MetaContextType {

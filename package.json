@@ -16,13 +16,15 @@
     "typecheck": "tsc -p client/tsconfig.json --noEmit && tsc -p server/tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@villutur/gemini-ai-lib": "^0.5.0",
+    "@villutur/gemini-ai-lib": "^0.5.1",
     "dotenv": "^17.3.1",
     "express": "^5.1.0",
     "multer": "1.4.5-lts.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router-dom": "^7.13.2"
+    "react-router-dom": "^7.13.2",
+    "react-syntax-highlighter": "^16.1.1",
+    "wav": "^1.0.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
@@ -30,6 +32,8 @@
     "@types/node": "^24.5.2",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "@types/wav": "^1.0.4",
     "@vitejs/plugin-react": "^5.0.2",
     "concurrently": "^9.2.1",
     "tsx": "^4.20.5",
