@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 import {
   GEMINI_TEXT_MODELS,
   GEMINI_IMAGE_MODELS,
@@ -15,6 +16,11 @@ import {
   getEmbeddingModelConfigOptions,
   getVideoModelConfigOptions,
   getLiveModelConfigOptions,
+  GeminiTextService,
+  GeminiChatService,
+  GeminiImageService,
+  GeminiAudioService,
+  GeminiEmbeddingService,
 } from "@villutur/gemini-ai-lib";
 import dotenv from "dotenv";
 import { existsSync, mkdirSync } from "node:fs";
@@ -55,6 +61,70 @@ if (!process.env.GEMINI_API_KEY) {
 }
 
 app.use(express.json());
+
+const upload = multer({ storage: multer.memoryStorage() });
+
+app.post("/api/run/:service", upload.any(), async (req, res) => {
+  const service = req.params.service;
+  
+  let inputs: any = {};
+  let config: any = {};
+  let selectedModel: string | undefined;
+
+  try {
+    if (req.body.inputs) inputs = typeof req.body.inputs === "string" ? JSON.parse(req.body.inputs) : req.body.inputs;
+    else inputs = req.body;
+    
+    if (req.body.config) config = typeof req.body.config === "string" ? JSON.parse(req.body.config) : req.body.config;
+    if (req.body.model) selectedModel = req.body.model;
+
+    const apiKey = process.env.GEMINI_API_KEY;
+
+    let result: any;
+    switch (service) {
+      case "text": {
+        const textSvc = new GeminiTextService({ apiKey });
+        result = await textSvc.generateText(inputs.prompt || "", { model: selectedModel, ...config });
+        break;
+      }
+      case "chat": {
+        const chatSvc = new GeminiChatService({
+          apiKey,
+          model: selectedModel,
+          history: inputs.history,
+          ...config
+        });
+        const message = inputs.message || "Hello";
+        const chatResult = await chatSvc.sendMessage(message);
+        result = { response: chatResult, history: await chatSvc.getHistory() };
+        break;
+      }
+      case "image": {
+        const imageSvc = new GeminiImageService({ apiKey });
+        result = await imageSvc.generateImageFromPrompt(inputs.prompt || "", { model: selectedModel, ...config });
+        break;
+      }
+      case "audio": {
+        const audioSvc = new GeminiAudioService({ apiKey });
+        const buffer = await audioSvc.generateAudio(inputs.text || "", inputs.prompt || "", { model: selectedModel, ...config });
+        result = { audioBase64: buffer.toString("base64") };
+        break;
+      }
+      case "embedding": {
+        const embedSvc = new GeminiEmbeddingService({ apiKey });
+        result = await embedSvc.embedText(inputs.content || "", { model: selectedModel, ...config });
+        break;
+      }
+      default:
+        return res.status(400).json({ error: `Service ${service} not implemented for execution yet.` });
+    }
+
+    res.json({ success: true, result });
+  } catch (err: any) {
+    console.error(`Run error [${service}]:`, err);
+    res.status(500).json({ success: false, error: err.message, stack: err.stack });
+  }
+});
 
 app.get("/api/meta", (_request, response) => {
   const meta = {
