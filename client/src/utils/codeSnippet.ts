@@ -103,17 +103,32 @@ const result = await service.generateMusicFromPrompt(
       return `// CLIENT-SIDE ONLY EXAMPLE
 import { GeminiLiveChatSession } from "@villutur/gemini-ai-lib";
 
+const { apiKey } = await fetch("/api/live/key").then((response) => response.json());
+
 const session = new GeminiLiveChatSession({
-  apiKey: "fetched-from-your-backend",
+  apiKey,
   model: "${model}",
-  systemInstruction: ${JSON.stringify(inputs.systemInstruction || "")},
   ...${JSON.stringify(config, null, 2).replace(/\n/g, "\n  ")}
 });
 
-session.on("message", (msg) => console.log(msg));
+session.setOptions({
+  ...session.options,
+  onSetupComplete() {
+    console.log("Live session ready.");
+  },
+  onInputTranscription(text, isFinal) {
+    console.log("User said:", text, isFinal ? "(final)" : "(partial)");
+  },
+  onOutputTranscription(text, isFinal) {
+    console.log("Model said:", text, isFinal ? "(final)" : "(partial)");
+  },
+  onError(error) {
+    console.error("Live session error:", error);
+  },
+});
 
-await session.connect();
-// session.sendVoice(...)
+await session.connect(${JSON.stringify(inputs.greetingPrompt || "")} || undefined);
+session.sendTextMessage("Hello from the browser live session!");
 `;
 
     default:

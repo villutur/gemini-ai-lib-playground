@@ -9,12 +9,12 @@ import { AudioForm } from "../components/forms/AudioForm";
 import { EmbeddingForm } from "../components/forms/EmbeddingForm";
 import { MusicForm } from "../components/forms/MusicForm";
 import { VideoForm } from "../components/forms/VideoForm";
-import { LiveForm } from "../components/forms/LiveForm";
 import { ConfigFormRenderer } from "../components/ConfigFormRenderer";
 import { PreviewRenderer } from "../components/PreviewRenderer";
 import { GeneratedCodePanel } from "../components/GeneratedCodePanel";
 import { SavedRunModal } from "../components/SavedRunModal";
 import { generateCodeSnippet } from "../utils/codeSnippet";
+import { LiveServicePage } from "./LiveServicePage";
 
 export function ServicePage() {
   const { serviceId } = useParams<{ serviceId: string }>();
@@ -66,6 +66,7 @@ export function ServicePage() {
   if (loading) return <p>Loading metadata...</p>;
   if (error) return <p className="error">Failed to load metadata: {error}</p>;
   if (!meta) return <p>No metadata available.</p>;
+  if (id === "live") return <LiveServicePage meta={meta} />;
 
   const serviceInfo = meta.services.find((s) => s.id === id);
   const models = meta.models[id] || [];
@@ -153,7 +154,6 @@ export function ServicePage() {
             {id === "embedding" && <EmbeddingForm values={inputs} onChange={setInputs} />}
             {id === "music" && <MusicForm values={inputs} onChange={setInputs} />}
             {id === "video" && <VideoForm values={inputs} onChange={setInputs} />}
-            {id === "live" && <LiveForm values={inputs} onChange={setInputs} />}
           </div>
           
           <div>

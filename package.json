@@ -24,7 +24,7 @@
     "typecheck": "tsc -p client/tsconfig.json --noEmit && tsc -p server/tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@villutur/gemini-ai-lib": "^0.5.1",
+    "@villutur/gemini-ai-lib": "^0.5.2",
     "dotenv": "^17.3.1",
     "express": "^5.1.0",
     "multer": "1.4.5-lts.1",

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@villutur/gemini-ai-lib':
-        specifier: ^0.5.1
-        version: 0.5.1
+        specifier: ^0.5.2
+        version: 0.5.2
       dotenv:
         specifier: ^17.3.1
         version: 17.3.1
@@ -591,8 +591,8 @@ packages:
   '@types/wav@1.0.4':
     resolution: {integrity: sha512-s8C6tD2lPnkNkX2rWl0FMSpOXrKb3zB9eRO36p2bViSVw9lVJLSJRK7sOe7lOQ13YpM22/K91o/stMempoWPFw==}
 
-  '@villutur/gemini-ai-lib@0.5.1':
-    resolution: {integrity: sha512-rSLBQZ2EWtsWYuJs/161mFXfS8spQVeXi/i3W95r8psi4Z1SJhTWGgJICEYVyvp9bG5gyuchhYg7hHUYnfveVw==}
+  '@villutur/gemini-ai-lib@0.5.2':
+    resolution: {integrity: sha512-Robx3tpvHU+4994CDcXmQV09nIQ97I/1PYsCG+qANRSTMufyCaFqJKaPnocZTRCQJ0XAtowNSOyE9/49dP67og==}
 
   '@vitejs/plugin-react@5.2.0':
     resolution: {integrity: sha512-YmKkfhOAi3wsB1PhJq5Scj3GXMn3WvtQ/JC0xoopuHoXSdmtdStOpFrYaT1kie2YgFBcIe64ROzMYRjCrYOdYw==}
@@ -1871,7 +1871,7 @@ snapshots:
     dependencies:
       '@types/node': 24.12.0
 
-  '@villutur/gemini-ai-lib@0.5.1':
+  '@villutur/gemini-ai-lib@0.5.2':
     dependencies:
       '@google/genai': 1.46.0
       consola: 3.4.2

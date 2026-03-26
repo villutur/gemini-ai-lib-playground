@@ -68,6 +68,12 @@ app.use(express.json());
 
 app.post("/api/run/:service", upload.any(), async (req, res) => {
   const service = req.params.service;
+  if (service === "live") {
+    return res.status(400).json({
+      success: false,
+      error: "Live sessions run client-side and should not use /api/run/live.",
+    });
+  }
   
   let inputs: any = {};
   let config: any = {};
